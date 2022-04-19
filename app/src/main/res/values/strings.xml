@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">admin_app</string>
+    <string name="Mon">Mon</string>
+    <string name="Tue">Tue</string>
+    <string name="Wed">Wed</string>
+    <string name="Thur">Thur</string>
+    <string name="Sun">Sun</string>
+    <string name="Fri">Fri</string>
+    <string name="Sat">Sat</string>
+    <string name="Pid">Pid</string>
+    <string name="patient_name">patient name</string>
+</resources>
