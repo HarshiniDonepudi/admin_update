@@ -1,7 +1,6 @@
 package com.example.admin_app.doctor
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
@@ -10,21 +9,29 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.admin_app.PatientActivity
+import androidx.core.net.toUri
+import coil.clear
+import coil.load
 import com.example.admin_app.R
 import com.example.admin_app.databinding.ActivityMainBinding
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     var slots : MutableList<MutableList<Int>> = mutableListOf(mutableListOf(0,0,0), mutableListOf(0,0,0), mutableListOf(0,0,0), mutableListOf(0,0,0),mutableListOf(0,0,0), mutableListOf(0,0,0), mutableListOf(0,0,0))
     var avl: MutableList<Int> = mutableListOf(0)
+    var selectedPhotoUri : Uri?=null
     private lateinit var dbref : DatabaseReference
+    private lateinit var cropIntent:Intent
+    var img_url = "https://images.app.goo.gl/TW4Eu84iUQzBvUoM8"
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         super.onCreate(savedInstanceState)
         setContentView(view)
+        binding.img.setImageResource(R.drawable.health_analyst_medical_diagnosis_body_wellness_check_up_svgrepo_com)
+
         //---------------------------------
         binding.img.setOnClickListener{
           val intent = Intent(Intent.ACTION_PICK)
@@ -76,7 +83,7 @@ class MainActivity : AppCompatActivity() {
             val id = binding.editText2.text.toString()
             val spec = binding.editText3.text.toString()
             val about = binding.editText4.text.toString()
-//        val img_url = binding.editText5.editableText
+
             val exp = binding.editText5.text.toString()
             val lan= binding.editText6.text.toString()
             var flag : Int = 0
@@ -117,24 +124,63 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             if(flag==0){
-                val data = Data(
-                            id.toInt(),
-                            name,
-                            spec,
-                            about,
-                            "not done yet",
-                            exp,
-                            avl as ArrayList<Int>,
-                            slots,
-                            lan
-                        )
-                        Log.e("data", "$id ,$name , $about , $exp ,$lan")
-                        setavl()
-                        dbref.child(data.id.toString()).setValue(data)
-                val toast = Toast.makeText(this," Sucessfully added",Toast.LENGTH_SHORT)
-                toast.show()
-                val intent = Intent(this, Doctorslist::class.java)
-                startActivity(intent)
+//                uploadimg(id)
+                if (selectedPhotoUri != null ) {
+                    selectedPhotoUri ="https://firebasestorage.googleapis.com/v0/b/admindb-44854.appspot.com/o/img%2Fdoctor.jpeg?alt=media&token=39054942-da1f-43f9-9051-e5443227ce00".toUri()
+                }
+                    val ref = FirebaseStorage.getInstance().getReference("/img/$id")
+                    ref.putFile(selectedPhotoUri!!)
+                        .addOnSuccessListener {
+                            Log.d("Uploading", "sucessfully:${it.metadata?.path}")
+
+                            ref.downloadUrl.addOnSuccessListener {
+                                img_url = it.toString()
+                                Log.e("img-inside", "url====>$img_url")
+//================
+                                val data = Data(
+                                    id.toInt(),
+                                    name,
+                                    spec,
+                                    about,
+                                    img_url,
+                                    exp,
+                                    avl as ArrayList<Int>,
+                                    slots,
+                                    lan
+                                )
+                                Log.e("data", "$id ,$name , $about , $exp ,$lan")
+                                setavl()
+                                dbref.child(data.id.toString()).setValue(data)
+                                val toast = Toast.makeText(this," Sucessfully added",Toast.LENGTH_SHORT)
+                                toast.show()
+                                val intent = Intent(this, Doctorslist::class.java)
+                                startActivity(intent)
+//==========================
+                            }
+
+                        }.addOnFailureListener {
+                            Log.d("Uploading", "Failed ")
+                        }
+
+                Log.e("out","url====>$img_url")
+//                val data = Data(
+//                            id.toInt(),
+//                            name,
+//                            spec,
+//                            about,
+//                            img_url,
+//                            exp,
+//                            avl as ArrayList<Int>,
+//                            slots,
+//                            lan
+//                        )
+//                        Log.e("data", "$id ,$name , $about , $exp ,$lan")
+//                        setavl()
+//                        dbref.child(data.id.toString()).setValue(data)
+//                val toast = Toast.makeText(this," Sucessfully added",Toast.LENGTH_SHORT)
+//                toast.show()
+//                val intent = Intent(this, Doctorslist::class.java)
+//                startActivity(intent)
 
             }
             else if(flag==1){
@@ -148,10 +194,13 @@ class MainActivity : AppCompatActivity() {
     }
     }
 
-    var selectedPhotoUri : Uri?=null
+
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode==0 && resultCode== Activity.RESULT_OK && data!=null){
+            binding.img.clear()
             selectedPhotoUri  =data.data
             val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,selectedPhotoUri)
             val bitmapDrawable= BitmapDrawable(bitmap)
@@ -246,189 +295,21 @@ class MainActivity : AppCompatActivity() {
             Log.e("Selectedslots:::>","$selectedSlot")
         setavl()
         }
+
+//    private fun cropImages(){
+//        try{
+//            cropIntent=Intent("com.android.camera.action.CROP")
+//            cropIntent.setDataAndType(selectedPhotoUri,*\)
+//            cropIntent
+//            cropIntent
+//            cropIntent
+//            cropIntent
+//            cropIntent
+//
+//        }
+//    }
+
 }
 
 
 
-
-//---------------------------------
-//var avl: MutableList<Int> = mutableListOf()
-//var avlset : Set<Int> = setOf()
-//var slots : MutableList<MutableList<Int>> = mutableListOf(mutableListOf(0,0,0), mutableListOf(0,0,0), mutableListOf(0,0,0), mutableListOf(0,0,0),mutableListOf(0,0,0), mutableListOf(0,0,0), mutableListOf(0,0,0))
-//private lateinit var binding: ActivityMainBinding
-//private lateinit var dbref : DatabaseReference
-//override fun onCreate(savedInstanceState: Bundle?) {
-//    binding = ActivityMainBinding.inflate(layoutInflater)
-//    val view = binding.root
-//    dbref = FirebaseDatabase.getInstance().getReference("Doctors")
-//    val id = binding.editText1.editableText
-//    val name = binding.editText2.editableText
-//    val spec = binding.editText3.editableText
-//    val about = binding.editText4.editableText
-////        val img_url = binding.editText5.editableText
-//    val exp = binding.editText5.editableText
-//    val lan= binding.editText6.editableText
-//
-//
-//
-//
-//    val data = Helper(2,"Karan","spec","about","dgfsdyf","5yrs",
-//        arrayListOf(1,2,3), listOf(listOf(1,1,1), listOf(1,0,1), listOf(0,0,1), listOf(0,0,0),listOf(0,0,0), listOf(0,0,0), listOf(0,0,0)),
-//        "English,Telugu,Hindi")
-//    //------------------------------------
-//
-//    //--------------------------------------------
-//    binding.button.setOnClickListener {
-//        setcolor()
-//        Log.e("ARRAY:::>","$avlset")
-//
-////            dbref.child(data.id.toString()).setValue(data)
-//    }
-//    //---------------------------------------------
-//    setcolor()
-//    binding.sun.setOnClickListener{
-//        setslots(0)
-//        setcolor()
-//
-//        binding.day.setText(getString(R.string.Sun))
-//    }
-//    binding.mon.setOnClickListener{
-//
-//        setslots(1)
-//        setcolor()
-//
-//        binding.day.setText(getString(R.string.Mon))
-//
-//    }
-//    binding.tue.setOnClickListener{
-//        setslots(2)
-//        setcolor()
-//        binding.day.setText(getString(R.string.Tue))
-//
-//    }
-//    binding.wed.setOnClickListener{
-//        setslots(3)
-//        setcolor()
-//        binding.day.setText(getString(R.string.Wed))
-//
-//    }
-//    binding.thur.setOnClickListener{
-//        setslots(4)
-//        setcolor()
-//        binding.day.setText(getString(R.string.Thur))
-//
-//    }
-//    binding.fri.setOnClickListener{
-//        setslots(5)
-//        setcolor()
-//        binding.day.setText(getString(R.string.Fri))
-//
-//    }
-//    binding.sat.setOnClickListener{
-//        setslots(6)
-//        setcolor()
-//        binding.day.setText(getString(R.string.Sat))
-//
-//    }
-//    setcolor()
-//    super.onCreate(savedInstanceState)
-//    setContentView(view)
-//
-//
-//}
-//
-//private fun setcolor() {
-//
-//    for(i in 0..6){
-//        var selectedSlot = slots[i].toMutableList()
-//        if ( selectedSlot[0]==1 || selectedSlot[1]==1|| selectedSlot[2]==1){
-//            avl.add(i+1)
-//
-//        }
-//        if ( selectedSlot[0]==0 && selectedSlot[1]==0&& selectedSlot[2]==0){
-//            avl.remove(i+1)
-//        }
-//
-//    }
-//    avlset  = avl.sorted().toSet()
-//    Log.e("avl","$avl")
-////        var text = ""
-////        for (i in avlset){
-////            when(i){
-////                1->text+="Sun"
-////                2->text+=" Mon"
-////                3-> text+=" Tue"
-////                4->text+=" Wed"
-////                5->text+=" Thur"
-////                6->text+=" Fri"
-////                7->text+=" Sat"
-////            }
-////
-////        }
-////        binding.days.text=text
-////        for (i in avl){
-////            when(i){
-////                1-> binding.sun.setBackgroundColor(Color.parseColor("#FF3C963F"))
-////                2-> binding.mon.setBackgroundColor(Color.parseColor("#FF3C963F"))
-////                3-> binding.tue.setBackgroundColor(Color.parseColor("#FF3C963F"))
-////                4-> binding.wed.setBackgroundColor(Color.parseColor("#FF3C963F"))
-////                5-> binding.thur.setBackgroundColor(Color.parseColor("#FF3C963F"))
-////                6-> binding.fri.setBackgroundColor(Color.parseColor("#FF3C963F"))
-////                7-> binding.sat.setBackgroundColor(Color.parseColor("#FF3C963F"))
-////            }
-////        }
-//}
-//
-//private fun setslots(i: Int) {
-//    binding.slot1.isChecked=false
-//    binding.slot2.isChecked=false
-//    binding.slot3.isChecked=false
-//    //------------------------
-//    var selectedSlot = slots[i].toMutableList()
-//    if (selectedSlot[0]==1){
-//        binding.slot1.isChecked=true
-//    }
-//    if (selectedSlot[1]==1){
-//        binding.slot2.isChecked=true
-//    }
-//    if (selectedSlot[2]==1){
-//        binding.slot3.isChecked=true
-//    }
-//    binding.slot1.setOnClickListener {
-//        setcolor()
-//        if (binding.slot1.isChecked()) {
-//            selectedSlot[0] = 1
-//            Log.e("Selectedslots:::>", "1True$selectedSlot")
-//        }
-//        else{
-//            selectedSlot[0] = 0
-//            Log.e("Selectedslots:::>", "1True$selectedSlot")
-//        }
-//    }
-//    binding.slot2.setOnClickListener {
-//        setcolor()
-//        if (binding.slot2.isChecked()) {
-//            selectedSlot[1] = 1
-//            Log.e("Selectedslots:::>", "1True$selectedSlot")
-//        }
-//        else{
-//            selectedSlot[1] = 0
-//            Log.e("Selectedslots:::>", "1True$selectedSlot")
-//        }
-//    }
-//    binding.slot3.setOnClickListener {
-//        setcolor()
-//        if (binding.slot3.isChecked()) {
-//            selectedSlot[2] = 1
-//            Log.e("Selectedslots:::>", "1True$selectedSlot")
-//        }
-//        else{
-//            selectedSlot[2] = 0
-//            Log.e("Selectedslots:::>", "1True$selectedSlot")
-//        }
-//    }
-//
-//    slots[i]= selectedSlot
-//    Log.e("Selectedslots:::>","$selectedSlot")
-//
-//}

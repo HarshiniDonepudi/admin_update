@@ -1,22 +1,30 @@
 package com.example.admin_app.doctor
 
+import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.net.toUri
+import coil.load
 import com.example.admin_app.R
 import com.example.admin_app.databinding.ActivityEditDoctorBinding
 import com.example.admin_app.databinding.ActivityMainBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 
 class EditDoctor : AppCompatActivity() {
     private lateinit var binding: ActivityEditDoctorBinding
     var slots : MutableList<MutableList<Int>> = mutableListOf(mutableListOf(0,0,0), mutableListOf(0,0,0), mutableListOf(0,0,0), mutableListOf(0,0,0),mutableListOf(0,0,0), mutableListOf(0,0,0), mutableListOf(0,0,0))
     var avl: MutableList<Int> = mutableListOf(0)
+    var img_url = ""
     private lateinit var dbref : DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityEditDoctorBinding.inflate(layoutInflater)
@@ -25,6 +33,12 @@ class EditDoctor : AppCompatActivity() {
         setContentView(view)
         val doctor_selected : Data = doctor[position]
         doctor.removeAt(position)
+        val img_view = binding.img
+        img_url=doctor_selected.img_url.toString()
+        img_view.load(doctor_selected.img_url?.toUri()){
+            placeholder(R.drawable.loading_animation)
+            error(R.drawable.ic_broken_image)
+        }
         binding.editText1.setText(doctor_selected.name.toString())
         binding.editText2.setText(doctor_selected.id.toString())
         binding.editText3.setText(doctor_selected.spec.toString())
@@ -71,6 +85,11 @@ class EditDoctor : AppCompatActivity() {
 
         }
         //------------------------------------
+        binding.img.setOnClickListener{
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type="image/*"
+            startActivityForResult(intent,0)
+        }
 
         binding.button.setOnClickListener {
             val name = binding.editText1.text.toString()
@@ -118,24 +137,60 @@ class EditDoctor : AppCompatActivity() {
                 }
             }
             if(flag==0){
-                val data = Data(
-                    id.toInt(),
-                    name,
-                    spec,
-                    about,
-                    "not done yet",
-                    exp,
-                    avl as ArrayList<Int>,
-                    slots,
-                    lan
-                )
-                Log.e("data", "$id ,$name , $about , $exp ,$lan")
-                setavl()
-                dbref.child(data.id.toString()).setValue(data)
-                val toast = Toast.makeText(this," Sucessfully Updated",Toast.LENGTH_SHORT)
-                toast.show()
-                val intent = Intent(this, Doctorslist::class.java)
-                startActivity(intent)
+//                uploadimg(id)
+                if (selectedPhotoUri != null ) {
+                    val ref = FirebaseStorage.getInstance().getReference("/img/$id")
+                    ref.putFile(selectedPhotoUri!!)
+                        .addOnSuccessListener {
+                            Log.d("Uploading", "sucessfully:${it.metadata?.path}")
+
+                            ref.downloadUrl.addOnSuccessListener {
+                                img_url = it.toString()
+                                Log.e("img-inside", "url====>$img_url")
+                                val data = Data(
+                                    id.toInt(),
+                                    name,
+                                    spec,
+                                    about,
+                                    img_url,
+                                    exp,
+                                    avl as ArrayList<Int>,
+                                    slots,
+                                    lan
+                                )
+                                Log.e("data", "$id ,$name , $about , $exp ,$lan")
+                                setavl()
+                                dbref.child(data.id.toString()).setValue(data)
+                                val toast = Toast.makeText(this," Sucessfully added",Toast.LENGTH_SHORT)
+                                toast.show()
+                                val intent = Intent(this, Doctorslist::class.java)
+                                startActivity(intent)
+
+                            }
+
+                        }.addOnFailureListener {
+                            Log.d("Uploading", "Failed ")
+                        }
+                }
+                Log.e("out","url====>$img_url")
+//                val data = Data(
+//                            id.toInt(),
+//                            name,
+//                            spec,
+//                            about,
+//                            img_url,
+//                            exp,
+//                            avl as ArrayList<Int>,
+//                            slots,
+//                            lan
+//                        )
+//                        Log.e("data", "$id ,$name , $about , $exp ,$lan")
+//                        setavl()
+//                        dbref.child(data.id.toString()).setValue(data)
+//                val toast = Toast.makeText(this," Sucessfully added",Toast.LENGTH_SHORT)
+//                toast.show()
+//                val intent = Intent(this, Doctorslist::class.java)
+//                startActivity(intent)
 
             }
             else if(flag==1){
@@ -155,6 +210,20 @@ class EditDoctor : AppCompatActivity() {
         startActivity(intent)
         super.onBackPressed()
     }
+
+
+
+    var selectedPhotoUri : Uri?=null
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode==0 && resultCode== Activity.RESULT_OK && data!=null){
+            selectedPhotoUri  =data.data
+            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,selectedPhotoUri)
+            val bitmapDrawable= BitmapDrawable(bitmap)
+            binding.img.setBackgroundDrawable(bitmapDrawable)
+        }
+    }
+
     private  fun setavl()
     {
         for ( i in 0..6){

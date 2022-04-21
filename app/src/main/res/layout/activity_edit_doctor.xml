@@ -11,14 +11,14 @@
         android:id="@+id/editText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:hint="Name"
         app:layout_constraintBottom_toTopOf="@id/editText2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img"
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
@@ -88,27 +88,41 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_editor_absoluteY="110dp"
-        app:layout_constraintBottom_toTopOf="@id/avl"/>
-
-    <TextView
-        android:id="@+id/avl"
+        app:layout_constraintBottom_toTopOf="@id/avlbox"/>
+    <LinearLayout
+        android:id="@+id/avlbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="25dp"
-        android:text="Availability:"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/avlcontainer"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editText6" />
+        app:layout_constraintTop_toBottomOf="@id/editText6"
+        app:layout_constraintBottom_toTopOf="@id/avlcontainer"
+        >
+
+        <TextView
+            android:id="@+id/avl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Availability:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/days"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/avlcontainer"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:layout_marginStart="25dp"
@@ -118,7 +132,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/avl"
+        app:layout_constraintTop_toBottomOf="@id/avlbox"
         app:layout_constraintBottom_toTopOf="@id/timeslotcontainer">
 
         <Button
@@ -131,7 +145,7 @@
             android:minHeight="20dp"/>
         <Button
             android:id="@+id/mon"
-            android:layout_width="52dp"
+            android:layout_width="53dp"
             android:layout_height="48dp"
             android:text="@string/Mon"
             android:gravity="center"
@@ -248,35 +262,23 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Update"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/slots" />
-
-
-    <TextView
-        android:id="@+id/days"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="days"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:textStyle="bold"
+        android:text="submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@id/slots"
+        app:layout_constraintVertical_bias="0.32999998" />
+
+
     <ImageView
         android:id="@+id/img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="99dp"
+        android:layout_height="91dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/days"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintBottom_toTopOf="@+id/editText1"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

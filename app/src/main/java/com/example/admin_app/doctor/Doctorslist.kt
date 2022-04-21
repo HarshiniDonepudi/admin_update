@@ -58,6 +58,7 @@ class Doctorslist : AppCompatActivity(), DoctorAdapter.Click  {
 
      fun getUserData() {
         dbref = FirebaseDatabase.getInstance().getReference("Doctors")
+
         dbref.addValueEventListener( object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                if(snapshot.exists()){
@@ -67,8 +68,10 @@ class Doctorslist : AppCompatActivity(), DoctorAdapter.Click  {
                        DoctorList.add(doctor!!)
                        senddoctor(DoctorList)
                    }
+
                    recyclerView.adapter= DoctorAdapter(DoctorList, this@Doctorslist,this@Doctorslist)
                }
+
             }
 
             override fun onCancelled(error: DatabaseError) {
