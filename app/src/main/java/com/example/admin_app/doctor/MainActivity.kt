@@ -1,7 +1,11 @@
 package com.example.admin_app.doctor
 
+import android.R.attr
 import android.app.Activity
+import android.app.ProgressDialog
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -9,13 +13,13 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import coil.clear
-import coil.load
 import com.example.admin_app.R
 import com.example.admin_app.databinding.ActivityMainBinding
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -30,13 +34,13 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         super.onCreate(savedInstanceState)
         setContentView(view)
-        binding.img.setImageResource(R.drawable.health_analyst_medical_diagnosis_body_wellness_check_up_svgrepo_com)
-
         //---------------------------------
         binding.img.setOnClickListener{
           val intent = Intent(Intent.ACTION_PICK)
             intent.type="image/*"
             startActivityForResult(intent,0)
+
+
         }
 
         //---------------------------------
@@ -79,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         //------------------------------------
 
         binding.button.setOnClickListener {
+
             val name = binding.editText1.text.toString()
             val id = binding.editText2.text.toString()
             val spec = binding.editText3.text.toString()
@@ -125,12 +130,20 @@ class MainActivity : AppCompatActivity() {
             }
             if(flag==0){
 //                uploadimg(id)
+
                 if (selectedPhotoUri != null ) {
-                    selectedPhotoUri ="https://firebasestorage.googleapis.com/v0/b/admindb-44854.appspot.com/o/img%2Fdoctor.jpeg?alt=media&token=39054942-da1f-43f9-9051-e5443227ce00".toUri()
-                }
+                    upload()
                     val ref = FirebaseStorage.getInstance().getReference("/img/$id")
-                    ref.putFile(selectedPhotoUri!!)
+                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotoUri)
+                    val byteArrayOutputStream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
+                    val reducedImage: ByteArray = byteArrayOutputStream.toByteArray()
+
+                    ref.putBytes(reducedImage)
+//                    ref.putFile(selectedPhotoUri!!)
                         .addOnSuccessListener {
+
+
                             Log.d("Uploading", "sucessfully:${it.metadata?.path}")
 
                             ref.downloadUrl.addOnSuccessListener {
@@ -151,7 +164,9 @@ class MainActivity : AppCompatActivity() {
                                 Log.e("data", "$id ,$name , $about , $exp ,$lan")
                                 setavl()
                                 dbref.child(data.id.toString()).setValue(data)
-                                val toast = Toast.makeText(this," Sucessfully added",Toast.LENGTH_SHORT)
+
+                                val toast =
+                                    Toast.makeText(this, " Sucessfully added", Toast.LENGTH_SHORT)
                                 toast.show()
                                 val intent = Intent(this, Doctorslist::class.java)
                                 startActivity(intent)
@@ -159,28 +174,37 @@ class MainActivity : AppCompatActivity() {
                             }
 
                         }.addOnFailureListener {
+
+                            val toast = Toast.makeText(this," Failed ",Toast.LENGTH_SHORT)
+                            toast.show()
                             Log.d("Uploading", "Failed ")
                         }
 
-                Log.e("out","url====>$img_url")
-//                val data = Data(
-//                            id.toInt(),
-//                            name,
-//                            spec,
-//                            about,
-//                            img_url,
-//                            exp,
-//                            avl as ArrayList<Int>,
-//                            slots,
-//                            lan
-//                        )
-//                        Log.e("data", "$id ,$name , $about , $exp ,$lan")
-//                        setavl()
-//                        dbref.child(data.id.toString()).setValue(data)
-//                val toast = Toast.makeText(this," Sucessfully added",Toast.LENGTH_SHORT)
-//                toast.show()
-//                val intent = Intent(this, Doctorslist::class.java)
-//                startActivity(intent)
+                    Log.e("out", "url====>$img_url")
+
+                }
+                else{
+                    upload()
+                    val data = Data(
+                        id.toInt(),
+                        name,
+                        spec,
+                        about,
+                        "https://firebasestorage.googleapis.com/v0/b/admindb-44854.appspot.com/o/img%2Fdoctor.jpeg?alt=media&token=83323dcd-9667-4737-9245-5fdd58caf149"
+                        ,exp,
+                        avl as ArrayList<Int>,
+                        slots,
+                        lan
+                    )
+                    Log.e("data", "$id ,$name , $about , $exp ,$lan")
+                    setavl()
+                    dbref.child(data.id.toString()).setValue(data)
+                    val toast =
+                        Toast.makeText(this, " Sucessfully added", Toast.LENGTH_SHORT)
+                    toast.show()
+                    val intent = Intent(this, Doctorslist::class.java)
+                    startActivity(intent)
+                }
 
             }
             else if(flag==1){
@@ -193,8 +217,34 @@ class MainActivity : AppCompatActivity() {
 
     }
     }
+//    private fun doCrop(picUri: Uri) {
+//        try {
+//            val cropIntent = Intent("com.android.camera.action.CROP")
+//            cropIntent.setDataAndType(picUri, "image/*")
+//            cropIntent.putExtra("crop", "true")
+//            cropIntent.putExtra("aspectX", 1)
+//            cropIntent.putExtra("aspectY", 1)
+//            cropIntent.putExtra("outputX", 128)
+//            cropIntent.putExtra("outputY", 128)
+//            cropIntent.putExtra("return-data", true)
+//            startActivityForResult(cropIntent, 1)
+//        } // respond to users whose devices do not support the crop action
+//        catch (anfe: ActivityNotFoundException) {
+//            // display an error message
+//            val errorMessage = "Whoops - your device doesn't support the crop action!"
+//            val toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT)
+//            toast.show()
+//        }
+//    }
+    private fun upload() {
+
+            val progressDialog = ProgressDialog(this)
+            progressDialog.setMessage("Uploading....")
+            progressDialog.setCancelable(false)
+            progressDialog.show()
 
 
+    }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -202,10 +252,21 @@ class MainActivity : AppCompatActivity() {
         if (requestCode==0 && resultCode== Activity.RESULT_OK && data!=null){
             binding.img.clear()
             selectedPhotoUri  =data.data
+//            selectedPhotoUri?.let { doCrop(it) }
             val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,selectedPhotoUri)
             val bitmapDrawable= BitmapDrawable(bitmap)
             binding.img.setBackgroundDrawable(bitmapDrawable)
         }
+//        if (requestCode === 1 && data!=null) {
+////            selectedPhotoUri =data.data
+////            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,selectedPhotoUri)
+////            val bitmapDrawable= BitmapDrawable(bitmap)
+////            binding.img.setBackgroundDrawable(bitmapDrawable)
+//                val extras: Bundle? = data.extras
+//                val bitmap = extras!!.getParcelable<Bitmap>("data")
+//                binding.img.setImageBitmap(bitmap)
+//
+//        }
     }
 
     private  fun setavl()

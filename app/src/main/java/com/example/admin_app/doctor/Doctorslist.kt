@@ -15,6 +15,8 @@ import com.example.admin_app.R
 import com.example.admin_app.databinding.ActivityDoctorslistBinding
 import com.example.admin_app.databinding.ActivityMainBinding
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+
 var position : Int = -1
   lateinit var doctor : ArrayList<Data>
 lateinit var DoctorList : ArrayList<Data>
@@ -116,6 +118,10 @@ class Doctorslist : AppCompatActivity(), DoctorAdapter.Click  {
         dialogBuilder.setNegativeButton("Delete"){
                 dialog,id->
                 val Id= doctor[position].id
+            val url = doctor[position].img_url
+            val ref = FirebaseStorage.getInstance().getReference("/img/$Id")
+            ref.delete().addOnSuccessListener { Log.e("Deleting","---> img Deleted") }
+                .addOnFailureListener{Log.e("Deleting","---> img not deleted")}
                 dbref.child(Id.toString()).removeValue().addOnSuccessListener {
                     Toast.makeText(this,"Deleting entry",Toast.LENGTH_SHORT).show()
                 }.addOnFailureListener{

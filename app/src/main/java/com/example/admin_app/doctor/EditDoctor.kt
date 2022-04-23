@@ -1,6 +1,7 @@
 package com.example.admin_app.doctor
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.drawable.BitmapDrawable
@@ -86,9 +87,11 @@ class EditDoctor : AppCompatActivity() {
         }
         //------------------------------------
         binding.img.setOnClickListener{
+            binding.img.setImageDrawable(null)
             val intent = Intent(Intent.ACTION_PICK)
             intent.type="image/*"
             startActivityForResult(intent,0)
+
         }
 
         binding.button.setOnClickListener {
@@ -139,9 +142,11 @@ class EditDoctor : AppCompatActivity() {
             if(flag==0){
 //                uploadimg(id)
                 if (selectedPhotoUri != null ) {
+                    upload()
                     val ref = FirebaseStorage.getInstance().getReference("/img/$id")
                     ref.putFile(selectedPhotoUri!!)
                         .addOnSuccessListener {
+
                             Log.d("Uploading", "sucessfully:${it.metadata?.path}")
 
                             ref.downloadUrl.addOnSuccessListener {
@@ -161,6 +166,7 @@ class EditDoctor : AppCompatActivity() {
                                 Log.e("data", "$id ,$name , $about , $exp ,$lan")
                                 setavl()
                                 dbref.child(data.id.toString()).setValue(data)
+
                                 val toast = Toast.makeText(this," Sucessfully added",Toast.LENGTH_SHORT)
                                 toast.show()
                                 val intent = Intent(this, Doctorslist::class.java)
@@ -169,6 +175,8 @@ class EditDoctor : AppCompatActivity() {
                             }
 
                         }.addOnFailureListener {
+                            val toast = Toast.makeText(this,"failed",Toast.LENGTH_SHORT)
+                            toast.show()
                             Log.d("Uploading", "Failed ")
                         }
                 }
@@ -204,6 +212,15 @@ class EditDoctor : AppCompatActivity() {
         }
 
     }
+
+    private fun upload() {
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Uploading....")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
+
+    }
+
 
     override fun onBackPressed() {
         val intent = Intent(this, Doctorslist::class.java)
