@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,7 @@ import com.example.admin_app.databinding.ActivityMainBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
 
 class EditDoctor : AppCompatActivity() {
     private lateinit var binding: ActivityEditDoctorBinding
@@ -141,17 +143,26 @@ class EditDoctor : AppCompatActivity() {
             }
             if(flag==0){
 //                uploadimg(id)
+
                 if (selectedPhotoUri != null ) {
                     upload()
+
                     val ref = FirebaseStorage.getInstance().getReference("/img/$id")
-                    ref.putFile(selectedPhotoUri!!)
+                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotoUri)
+                    val byteArrayOutputStream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
+                    val reducedImage: ByteArray = byteArrayOutputStream.toByteArray()
+
+                    ref.putBytes(reducedImage)
+//                    ref.putFile(selectedPhotoUri!!)
                         .addOnSuccessListener {
 
                             Log.d("Uploading", "sucessfully:${it.metadata?.path}")
 
                             ref.downloadUrl.addOnSuccessListener {
                                 img_url = it.toString()
-                                Log.e("img-inside", "url====>$img_url")
+
+                                Log.e("img-inside", "url====>$avl")
                                 val data = Data(
                                     id.toInt(),
                                     name,

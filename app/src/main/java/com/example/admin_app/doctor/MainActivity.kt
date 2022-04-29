@@ -149,7 +149,9 @@ class MainActivity : AppCompatActivity() {
                             ref.downloadUrl.addOnSuccessListener {
                                 img_url = it.toString()
                                 Log.e("img-inside", "url====>$img_url")
-//================
+//================avl.removeAt(0)
+
+                                Log.e("avl-inside", "url====>$avl")
                                 val data = Data(
                                     id.toInt(),
                                     name,
