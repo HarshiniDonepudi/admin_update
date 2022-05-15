@@ -1,0 +1,110 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="20dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    app:cardMaxElevation="10dp"
+    app:cardPreventCornerOverlap="true">
+    <!--    app:cardUseCompatPadding="true"-->
+
+
+    <!--
+        In the above cardview widget
+        cardelevation property will give elevation to your card view
+        card corner radius will provide radius to your card view
+        card background color will give background color to your card view
+        card max elevation will give the cardview maximum elevation
+        card prevent corner overlap will add padding to CardView on v20 and
+        before to prevent intersections between the Card content and rounded corners.
+        card use compact padding will add padding in API v21+ as well to have the same
+        measurements with previous versions.
+    -->
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--ImageVIew to display our Course Image-->
+
+        <!--Text View to display Course Name-->
+        <TextView
+            android:id="@+id/ddate"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:text="date : "
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/rid"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ddate"
+            android:layout_marginStart="15dp"
+
+            android:text="report id : "
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/did"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rid"
+            android:layout_marginStart="15dp"
+
+            android:text="doctor id: "
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/patientname"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/did"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"
+            android:text="patient name: "
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/pdfimg"
+            android:layout_width="60dp"
+            android:layout_height="46dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="33dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="14dp"
+            android:layout_toEndOf="@id/patientname"
+            android:src="@drawable/ic_baseline_picture_as_pdf_24" />
+
+        <ImageView
+            android:id="@+id/delete"
+            android:layout_width="60dp"
+            android:layout_height="46dp"
+            android:layout_below="@+id/pdfimg"
+            android:layout_marginStart="34dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="9dp"
+            android:layout_toEndOf="@id/patientname"
+            android:src="@drawable/ic_baseline_delete_24" />
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

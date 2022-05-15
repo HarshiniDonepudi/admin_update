@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.admin_app.R
 
-class DoctorAdapter(private val doctorlists :ArrayList<Data>, private val edit: Click, private val delete: Click) : RecyclerView.Adapter<DoctorAdapter.myViewHolder>() {
+class DoctorAdapter(private val doctorlists :ArrayList<Data>, private val edit: Click, private val delete: Click)
+    : RecyclerView.Adapter<DoctorAdapter.myViewHolder>() {
     class myViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
          val name : TextView = itemView.findViewById(R.id.doctorname)
          val docid : TextView = itemView.findViewById(R.id.docid)

@@ -3,15 +3,20 @@ package com.example.admin_app
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.admin_app.databinding.ActivityMainBinding
 import com.example.admin_app.databinding.ActivityPatientProfileBinding
+import com.example.admin_app.reports.ReportsActivity
+import com.example.admin_app.vaccine.VaccineActivity
 
 class PatientProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPatientProfileBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPatientProfileBinding.inflate(layoutInflater)
-        val view = binding.root
+        setContentView(binding.root)
+       binding.app.setOnClickListener {
+       val intent = Intent(this, AppointmentActivity::class.java)
+           startActivity(intent)
+}
         binding.vaccine.setOnClickListener{
             val intent = Intent(this, VaccineActivity::class.java)
             startActivity(intent)
