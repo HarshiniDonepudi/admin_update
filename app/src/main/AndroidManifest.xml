@@ -13,6 +13,69 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Admin_app">
         <activity
+            android:name=".HomeUpdatesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LCGHMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LCGHNewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ConfirmVaccineActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditTeamActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddTeamActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OurTeamActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditFacilitiesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddFacilitiesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditAboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddAboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditVaccineActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NVaccineActivity"
+            android:exported="false" />
+        <activity
+            android:name=".vaccine.NewVaccineActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddVaccineActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ImageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddPicActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FacilitiesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GalleryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OthersActivity"
+            android:exported="false" />
+        <activity
             android:name=".reports.pdfviewer"
             android:exported="false" />
         <activity
@@ -27,7 +90,6 @@
         <activity
             android:name=".ZoomClass"
             android:exported="false" />
-
         <activity
             android:name=".NewUserActivity"
             android:exported="false" />

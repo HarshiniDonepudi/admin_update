@@ -10,11 +10,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin_app.databinding.ActivityAppointmentBinding
 import com.example.admin_app.databinding.ActivityMainBinding
 import com.example.admin_app.doctor.DoctorAdapter
+import com.example.admin_app.doctor.Doctorslist
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -62,6 +64,11 @@ retrive()
         progressDialog.setMessage("Fetching data....")
         progressDialog.setCancelable(false)
         progressDialog.show()
+        if (!Doctorslist().isConnected(applicationContext)) {
+            Toast.makeText(applicationContext, "No Internet ", Toast.LENGTH_SHORT).show();
+            Log.e("network--->","if-block")
+            progressDialog.dismiss()
+        }
         db.collection("Appointment").get()
             .addOnSuccessListener { datas ->
                 for (i in datas) {

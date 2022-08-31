@@ -34,37 +34,28 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/top_bcakground" />
 
-                <ImageView
-                    android:id="@+id/imageView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="48dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/pp" />
-
                 <TextView
                     android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Harshini"
+                    android:text="LIONS CANCER HOSPITAL"
                     android:textColor="@color/white"
-                    android:textSize="22sp"
+                    android:textSize="28sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/imageView7"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="100dp"
+                    tools:layout_editor_absoluteY="164dp" />
 
                 <TextView
                     android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="elinawatson@gmail.com"
+                    android:text="PATIENT RECORDS"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/textView6"
                     app:layout_constraintStart_toStartOf="@+id/textView6"
@@ -91,7 +82,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="PID:147652"
+
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="18dp"
@@ -122,7 +113,7 @@
                         <LinearLayout
                             android:id="@+id/app"
                             android:layout_width="122dp"
-                            android:layout_height="118dp"
+                            android:layout_height="122dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="20dp"
@@ -170,7 +161,8 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="20dp">
 
                         <LinearLayout
                             android:id="@+id/results"
@@ -185,42 +177,12 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/history"
-                            android:layout_width="122dp"
-                            android:layout_height="118dp"
-                            android:layout_marginTop="8dp"
-                            android:background="@drawable/his"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="38dp"
-                                android:layout_height="38dp"
-                                android:layout_marginStart="42dp"
-                                android:layout_marginTop="24dp"
-                                app:srcCompat="@drawable/history_svgrepo_com"
-                                app:tint="@color/white" />
-
-
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="300dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-
-                        android:orientation="horizontal">
-
-                        <LinearLayout
                             android:id="@+id/diagnosis"
                             android:layout_width="122dp"
                             android:layout_height="118dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="8dp"
+
+
                             android:background="@drawable/dia"
                             android:orientation="vertical">
 
@@ -236,29 +198,10 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/medicine"
-                            android:layout_width="122dp"
-                            android:layout_height="118dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="@drawable/med"
-                            android:orientation="vertical">
-
-                            <ImageView
-
-                                android:layout_width="38dp"
-                                android:layout_height="38dp"
-                                android:layout_marginStart="42dp"
-                                android:layout_marginTop="24dp"
-                                app:srcCompat="@drawable/medicine_svgrepo_com"
-                                app:tint="@color/white" />
-
-
-                        </LinearLayout>
-
 
                     </LinearLayout>
+
+
 
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,7 @@
 package com.example.admin_app.doctor
 
-import android.R.attr
 import android.app.Activity
 import android.app.ProgressDialog
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -91,6 +89,7 @@ class MainActivity : AppCompatActivity() {
 
             val exp = binding.editText5.text.toString()
             val lan= binding.editText6.text.toString()
+            val fee = binding.editText7.text.toString()
             var flag : Int = 0
             if(name.isEmpty()){
                 flag=2
@@ -122,6 +121,7 @@ class MainActivity : AppCompatActivity() {
                 binding.editText6.error="Please enter Language!"
                 binding.editText6.requestFocus()
             }
+
             for (i in doctor){
                 if(i.id.toString()==id.toString()){
                     flag=1
@@ -161,7 +161,8 @@ class MainActivity : AppCompatActivity() {
                                     exp,
                                     avl as ArrayList<Int>,
                                     slots,
-                                    lan
+                                    lan,
+                                    fee
                                 )
                                 Log.e("data", "$id ,$name , $about , $exp ,$lan")
                                 setavl()
@@ -196,7 +197,8 @@ class MainActivity : AppCompatActivity() {
                         ,exp,
                         avl as ArrayList<Int>,
                         slots,
-                        lan
+                        lan,
+                        fee
                     )
                     Log.e("data", "$id ,$name , $about , $exp ,$lan")
                     setavl()

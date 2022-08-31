@@ -25,17 +25,17 @@ class PatientProfileActivity : AppCompatActivity() {
             val intent = Intent(this, ReportsActivity::class.java)
             startActivity(intent)
         }
-        binding.history.setOnClickListener{
-            val intent = Intent(this, HistoryActivity::class.java)
-            startActivity(intent)
-        }
+
         binding.diagnosis.setOnClickListener{
             val intent = Intent(this, DiagnosisActivity::class.java)
             startActivity(intent)
         }
-        binding.medicine.setOnClickListener{
-            val intent = Intent(this, MedicinesActivity::class.java)
-            startActivity(intent)
-        }
+
+
+    }
+    override fun onBackPressed() {
+        val intent= Intent(this,DandPActivity::class.java)
+        startActivity(intent)
+        super.onBackPressed()
     }
 }

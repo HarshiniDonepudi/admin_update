@@ -26,6 +26,7 @@ class DandPActivity : AppCompatActivity() {
         setContentView(R.layout.activity_dand_pactivity)
         val doctors: Button = findViewById(R.id.doctors)
         val patients: Button = findViewById(R.id.patients)
+        val others: Button = findViewById(R.id.others)
         doctors.setOnClickListener {
             val intent = Intent(this, Doctorslist::class.java)
             startActivity(intent)
@@ -34,6 +35,11 @@ class DandPActivity : AppCompatActivity() {
             val intent = Intent(this, PatientProfileActivity::class.java)
             startActivity(intent)
         }
+        others.setOnClickListener {
+            val intent = Intent(this, OthersActivity::class.java)
+            startActivity(intent)
+        }
+
 
 
 
@@ -53,7 +59,7 @@ class DandPActivity : AppCompatActivity() {
                 .getString("logged_email", admin_info.email)
             Log.e("logged","${loggedemail}")
 
-            if(loggedemail=="admin@lch.com")
+            if(loggedemail=="lionscancerhospital@gmail.com")
                 menu?.findItem(R.id.adduser)?.setEnabled(true)
             else
                 menu?.findItem(R.id.adduser)?.setVisible(false)

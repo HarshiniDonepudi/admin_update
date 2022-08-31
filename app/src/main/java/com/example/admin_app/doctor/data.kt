@@ -9,5 +9,6 @@ data class Data(
     var exp:String?=null,
     var avl: ArrayList<Int>?=null,
     var timeslots: List<List<Int>>?=null,
-    var lang: String?=null
+    var lang: String?=null,
+    var fee: String ?=null
 )

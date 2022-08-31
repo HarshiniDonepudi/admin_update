@@ -8,7 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.example.admin_app.databinding.ActivityAddvaccineBinding
+import com.example.admin_app.databinding.ActivityAddVaccineBinding
+
 import com.example.admin_app.databinding.ActivityVaccineBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -19,9 +20,9 @@ class addvaccine : AppCompatActivity() {
     var pdfuri : Uri?=null
     var genurl : String =""
     val db = FirebaseFirestore.getInstance()
-    private lateinit var binding: ActivityAddvaccineBinding
+    private lateinit var binding: ActivityAddVaccineBinding
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityAddvaccineBinding.inflate(layoutInflater)
+        binding = ActivityAddVaccineBinding.inflate(layoutInflater)
         Log.e("add vaccine","Open")
         val view = binding.root
         super.onCreate(savedInstanceState)

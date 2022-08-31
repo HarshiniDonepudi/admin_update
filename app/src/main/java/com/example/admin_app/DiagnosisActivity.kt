@@ -8,11 +8,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin_app.databinding.ActivityAppointmentBinding
 import com.example.admin_app.databinding.ActivityDiagnosisBinding
 import com.example.admin_app.doctor.Data
+import com.example.admin_app.doctor.Doctorslist
 import com.example.admin_app.doctor.MainActivity
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.EventListener
@@ -82,6 +84,11 @@ class DiagnosisActivity : AppCompatActivity(),DiagnosisAdapter.Click {
         progressDialog.setMessage("Fetching data....")
         progressDialog.setCancelable(false)
         progressDialog.show()
+        if (!Doctorslist().isConnected(applicationContext)) {
+            Toast.makeText(applicationContext, "No Internet ", Toast.LENGTH_SHORT).show();
+            Log.e("network--->","if-block")
+            progressDialog.dismiss()
+        }
         db.collection("Diagnosis").get()
             .addOnSuccessListener { datas ->
                 for (i in datas) {
@@ -152,5 +159,10 @@ class DiagnosisActivity : AppCompatActivity(),DiagnosisAdapter.Click {
         urlimg=url
         val intent = Intent(this, PresActivity::class.java)
         startActivity(intent)
+    }
+    override fun onBackPressed() {
+        val intent= Intent(this, PatientProfileActivity::class.java)
+        startActivity(intent)
+        super.onBackPressed()
     }
 }

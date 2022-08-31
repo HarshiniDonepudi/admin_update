@@ -3,27 +3,25 @@ package com.example.admin_app.doctor
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import coil.load
 import com.example.admin_app.R
 import com.example.admin_app.databinding.ActivityEditDoctorBinding
-import com.example.admin_app.databinding.ActivityMainBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
 
 class EditDoctor : AppCompatActivity() {
+    var check=0
     private lateinit var binding: ActivityEditDoctorBinding
     var slots : MutableList<MutableList<Int>> = mutableListOf(mutableListOf(0,0,0), mutableListOf(0,0,0), mutableListOf(0,0,0), mutableListOf(0,0,0),mutableListOf(0,0,0), mutableListOf(0,0,0), mutableListOf(0,0,0))
     var avl: MutableList<Int> = mutableListOf(0)
@@ -48,6 +46,7 @@ class EditDoctor : AppCompatActivity() {
         binding.editText4.setText(doctor_selected.about.toString())
         binding.editText5.setText(doctor_selected.exp.toString())
         binding.editText6.setText(doctor_selected.lang.toString())
+        binding.editText7.setText(doctor_selected.fee.toString())
         slots= doctor_selected.timeslots as MutableList<MutableList<Int>>
         avl= doctor_selected.avl as MutableList<Int>
 
@@ -93,10 +92,11 @@ class EditDoctor : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type="image/*"
             startActivityForResult(intent,0)
-
+            check=1
         }
 
         binding.button.setOnClickListener {
+
             val name = binding.editText1.text.toString()
             val id = binding.editText2.text.toString()
             val spec = binding.editText3.text.toString()
@@ -104,6 +104,7 @@ class EditDoctor : AppCompatActivity() {
 //        val img_url = binding.editText5.editableText
             val exp = binding.editText5.text.toString()
             val lan= binding.editText6.text.toString()
+            val fee= binding.editText7.text.toString()
             var flag : Int = 0
             if(name.isEmpty()){
                 flag=2
@@ -143,53 +144,90 @@ class EditDoctor : AppCompatActivity() {
             }
             if(flag==0){
 //                uploadimg(id)
+                if (check==1) {
+                    if (selectedPhotoUri != null) {
+                        upload()
 
-                if (selectedPhotoUri != null ) {
-                    upload()
+                        val ref = FirebaseStorage.getInstance().getReference("/img/$id")
+                        val bitmap =
+                            MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotoUri)
+                        val byteArrayOutputStream = ByteArrayOutputStream()
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
+                        val reducedImage: ByteArray = byteArrayOutputStream.toByteArray()
 
-                    val ref = FirebaseStorage.getInstance().getReference("/img/$id")
-                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotoUri)
-                    val byteArrayOutputStream = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
-                    val reducedImage: ByteArray = byteArrayOutputStream.toByteArray()
-
-                    ref.putBytes(reducedImage)
+                        ref.putBytes(reducedImage)
 //                    ref.putFile(selectedPhotoUri!!)
-                        .addOnSuccessListener {
+                            .addOnSuccessListener {
 
-                            Log.d("Uploading", "sucessfully:${it.metadata?.path}")
+                                Log.d("Uploading", "sucessfully:${it.metadata?.path}")
 
-                            ref.downloadUrl.addOnSuccessListener {
-                                img_url = it.toString()
+                                ref.downloadUrl.addOnSuccessListener {
+                                    img_url = it.toString()
 
-                                Log.e("img-inside", "url====>$avl")
-                                val data = Data(
-                                    id.toInt(),
-                                    name,
-                                    spec,
-                                    about,
-                                    img_url,
-                                    exp,
-                                    avl as ArrayList<Int>,
-                                    slots,
-                                    lan
-                                )
-                                Log.e("data", "$id ,$name , $about , $exp ,$lan")
-                                setavl()
-                                dbref.child(data.id.toString()).setValue(data)
+                                    Log.e("img-inside", "url====>$avl")
+                                    val data = Data(
+                                        id.toInt(),
+                                        name,
+                                        spec,
+                                        about,
+                                        img_url,
+                                        exp,
+                                        avl as ArrayList<Int>,
+                                        slots,
+                                        lan,
+                                        fee
+                                    )
+                                    Log.e("data", "$id ,$name , $about , $exp ,$lan")
+                                    setavl()
+                                    dbref.child(data.id.toString()).setValue(data)
 
-                                val toast = Toast.makeText(this," Sucessfully added",Toast.LENGTH_SHORT)
+                                    val toast = Toast.makeText(
+                                        this,
+                                        " Sucessfully added",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                    toast.show()
+                                    val intent = Intent(this, Doctorslist::class.java)
+                                    startActivity(intent)
+
+                                }
+
+                            }.addOnFailureListener {
+                                val toast = Toast.makeText(this, "failed", Toast.LENGTH_SHORT)
                                 toast.show()
-                                val intent = Intent(this, Doctorslist::class.java)
-                                startActivity(intent)
-
+                                Log.d("Uploading", "Failed ")
                             }
+                    }
+                }
+                else if(check==0){
+                    img_url = doctor_selected.img_url.toString()
 
-                        }.addOnFailureListener {
-                            val toast = Toast.makeText(this,"failed",Toast.LENGTH_SHORT)
-                            toast.show()
-                            Log.d("Uploading", "Failed ")
-                        }
+                    Log.e("img-inside", "url====>$avl")
+                    val data = Data(
+                        id.toInt(),
+                        name,
+                        spec,
+                        about,
+                        img_url,
+                        exp,
+                        avl as ArrayList<Int>,
+                        slots,
+                        lan,
+                        fee
+                    )
+                    Log.e("data", "$id ,$name , $about , $exp ,$lan")
+                    setavl()
+                    dbref.child(data.id.toString()).setValue(data)
+
+                    val toast = Toast.makeText(
+                        this,
+                        " Sucessfully added",
+                        Toast.LENGTH_SHORT
+                    )
+                    toast.show()
+                    val intent = Intent(this, Doctorslist::class.java)
+                    startActivity(intent)
+
                 }
                 Log.e("out","url====>$img_url")
 //                val data = Data(

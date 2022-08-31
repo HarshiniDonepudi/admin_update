@@ -2,12 +2,16 @@ package com.example.admin_app.doctor
 
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin_app.PatientActivity
@@ -40,18 +44,11 @@ class Doctorslist : AppCompatActivity(), DoctorAdapter.Click  {
         recyclerView.setHasFixedSize(true)
         DoctorList = arrayListOf<Data>()
         getUserData()
+
         binding.add.setOnClickListener{
             dbref = FirebaseDatabase.getInstance().getReference("Doctors")
-//           val data=Data(1254646,"name",
-//            "spec",
-//            "about",
-//            "not done yet",
-//            "exp",
-//            avl as ArrayList<Int>,
-//            slots,
-//            "lan"
-//            )
-//            Log.e("data", "$id ,$name , $about , $exp ,$lan")
+
+////            Log.e("data", "$id ,$name , $about , $exp ,$lan")
 //            dbref.child(data.id.toString()).setValue(data)
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -59,8 +56,21 @@ class Doctorslist : AppCompatActivity(), DoctorAdapter.Click  {
     }
 
      fun getUserData() {
+         val fakedata=Data(1254646,"name", "spec",
+             "about",
+             "not done yet",
+             "exp",
+             avl as ArrayList<Int>,
+             slots,
+             "lan",
+             "200"
+         )
         dbref = FirebaseDatabase.getInstance().getReference("Doctors")
+         if (!isConnected(applicationContext)) {
+             Toast.makeText(applicationContext, "No Internet ", Toast.LENGTH_SHORT).show();
+             Log.e("network--->","if-block")
 
+         }
         dbref.addValueEventListener( object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                if(snapshot.exists()){
@@ -70,7 +80,7 @@ class Doctorslist : AppCompatActivity(), DoctorAdapter.Click  {
                        DoctorList.add(doctor!!)
                        senddoctor(DoctorList)
                    }
-
+                    DoctorList.remove(fakedata)
                    recyclerView.adapter= DoctorAdapter(DoctorList, this@Doctorslist,this@Doctorslist)
                }
 
@@ -133,6 +143,31 @@ class Doctorslist : AppCompatActivity(), DoctorAdapter.Click  {
 
         val alert = dialogBuilder.create()
         alert.show()
+    }
+    fun isConnected(context: Context): Boolean {
+        Log.e("network--->","isconnect called")
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            val network = connectivityManager.activeNetwork ?: return false
+
+            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+            return when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+
+                else -> false
+            }
+        } else {
+            @Suppress("DEPRECATION") val networkInfo =
+                connectivityManager.activeNetworkInfo ?: return false
+            @Suppress("DEPRECATION")
+            return networkInfo.isConnected
+        }
+
     }
 
 }

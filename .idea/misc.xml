@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="..\:/Users/harsh/AndroidStudioProjects/admin_app/app/src/main/res/layout/activity_main.xml" value="0.335" />
         <entry key="..\:/Users/harsh/Downloads/admin_app-master/admin_app-master/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.284" />
         <entry key="..\:/Users/harsh/Downloads/admin_app-master/admin_app-master/app/src/main/res/layout/activity_doctor_adapter.xml" value="0.13601823708206687" />
@@ -22,21 +23,43 @@
         <entry key="app/src/main/res/drawable/ic_logout_svgrepo_com.xml" value="0.265" />
         <entry key="app/src/main/res/drawable/input_bg.xml" value="0.2925" />
         <entry key="app/src/main/res/drawable/loading_img.xml" value="0.3575" />
+        <entry key="app/src/main/res/layout/about.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_about.xml" value="0.31197916666666664" />
+        <entry key="app/src/main/res/layout/activity_add_about.xml" value="0.23645833333333333" />
+        <entry key="app/src/main/res/layout/activity_add_facilities.xml" value="0.29431457519531246" />
+        <entry key="app/src/main/res/layout/activity_add_pic.xml" value="0.25092592592592594" />
+        <entry key="app/src/main/res/layout/activity_add_team.xml" value="0.29616241455078124" />
+        <entry key="app/src/main/res/layout/activity_add_vaccine.xml" value="0.16145833333333334" />
         <entry key="app/src/main/res/layout/activity_addreports.xml" value="0.34739583333333335" />
         <entry key="app/src/main/res/layout/activity_addvaccine.xml" value="0.4051855617691917" />
         <entry key="app/src/main/res/layout/activity_appointment.xml" value="0.10987261146496816" />
+        <entry key="app/src/main/res/layout/activity_confirm_vaccine.xml" value="0.3734375" />
         <entry key="app/src/main/res/layout/activity_dand_pactivity.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/layout/activity_diagnosis.xml" value="0.34739583333333335" />
         <entry key="app/src/main/res/layout/activity_doctorslist.xml" value="0.16354166666666667" />
+        <entry key="app/src/main/res/layout/activity_edit_about.xml" value="0.23645833333333333" />
         <entry key="app/src/main/res/layout/activity_edit_diagnosis.xml" value="0.2249114990234375" />
-        <entry key="app/src/main/res/layout/activity_edit_doctor.xml" value="0.34739583333333335" />
+        <entry key="app/src/main/res/layout/activity_edit_doctor.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_edit_facilities.xml" value="0.30185185185185187" />
+        <entry key="app/src/main/res/layout/activity_edit_team.xml" value="0.23645833333333333" />
+        <entry key="app/src/main/res/layout/activity_edit_vaccine.xml" value="0.14895833333333333" />
+        <entry key="app/src/main/res/layout/activity_facilities.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_gallery.xml" value="0.31197916666666664" />
         <entry key="app/src/main/res/layout/activity_history.xml" value="0.34739583333333335" />
+        <entry key="app/src/main/res/layout/activity_image.xml" value="0.13987070719401043" />
+        <entry key="app/src/main/res/layout/activity_lcghmain.xml" value="0.353125" />
+        <entry key="app/src/main/res/layout/activity_lcghnews.xml" value="0.20074157714843752" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.5734115600585938" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.34739583333333335" />
+        <entry key="app/src/main/res/layout/activity_main2.xml" value="0.24322916666666666" />
         <entry key="app/src/main/res/layout/activity_medicines.xml" value="0.34739583333333335" />
         <entry key="app/src/main/res/layout/activity_new_user.xml" value="0.31707611083984377" />
+        <entry key="app/src/main/res/layout/activity_new_vaccine.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_nvaccine.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_others.xml" value="0.36224365234375006" />
+        <entry key="app/src/main/res/layout/activity_our_team.xml" value="0.5184249877929688" />
         <entry key="app/src/main/res/layout/activity_patient.xml" value="0.31666666666666665" />
-        <entry key="app/src/main/res/layout/activity_patient_profile.xml" value="0.30113636363636365" />
+        <entry key="app/src/main/res/layout/activity_patient_profile.xml" value="0.320953369140625" />
         <entry key="app/src/main/res/layout/activity_pdfviewer.xml" value="0.30364583333333334" />
         <entry key="app/src/main/res/layout/activity_pres.xml" value="0.34739583333333335" />
         <entry key="app/src/main/res/layout/activity_prescription.xml" value="0.34739583333333335" />
@@ -47,10 +70,21 @@
         <entry key="app/src/main/res/layout/appointment_listcard.xml" value="0.34739583333333335" />
         <entry key="app/src/main/res/layout/diagnosis_list.xml" value="0.34739583333333335" />
         <entry key="app/src/main/res/layout/doctor_item.xml" value="0.29814814814814816" />
+        <entry key="app/src/main/res/layout/facilities.xml" value="0.30185185185185187" />
+        <entry key="app/src/main/res/layout/fragment_news.xml" value="0.23645833333333333" />
+        <entry key="app/src/main/res/layout/fragment_vaccine_certificates.xml" value="0.7861404418945315" />
+        <entry key="app/src/main/res/layout/fragment_vaccine_request.xml" value="0.22037037037037038" />
+        <entry key="app/src/main/res/layout/fragment_vaccines.xml" value="0.1" />
         <entry key="app/src/main/res/layout/patient_card.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/reports_list.xml" value="0.34739583333333335" />
+        <entry key="app/src/main/res/layout/reports_list.xml" value="0.19835815429687503" />
+        <entry key="app/src/main/res/layout/request.xml" value="0.22037037037037038" />
+        <entry key="app/src/main/res/layout/row.xml" value="0.31197916666666664" />
+        <entry key="app/src/main/res/layout/team_item.xml" value="0.23645833333333333" />
         <entry key="app/src/main/res/layout/vaccine_list.xml" value="0.4051855617691917" />
+        <entry key="app/src/main/res/layout/vaccine_row.xml" value="0.309375" />
         <entry key="app/src/main/res/menu/custom_menu.xml" value="0.45432434082031253" />
+        <entry key="app/src/main/res/menu/photo_menu.xml" value="0.12239583333333333" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>

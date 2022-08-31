@@ -9,6 +9,6 @@
     <item
         android:id="@+id/logout"
         android:title="addUser"
-        android:icon="@drawable/ic_logout_svgrepo_com"
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
         app:showAsAction="always" />
 </menu>

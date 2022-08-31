@@ -9,15 +9,15 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
+import com.example.admin_app.PatientProfileActivity
 import com.example.admin_app.PresActivity
 import com.example.admin_app.R
 import com.example.admin_app.databinding.ActivityDoctorslistBinding
 import com.example.admin_app.databinding.ActivityReportsBinding
-import com.example.admin_app.doctor.EditDoctor
-import com.example.admin_app.doctor.MainActivity
-import com.example.admin_app.doctor.doctor
-import com.example.admin_app.doctor.position
+import com.example.admin_app.doctor.*
+import com.example.admin_app.vaccine.VaccineActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 
@@ -45,6 +45,11 @@ class ReportsActivity : AppCompatActivity(),ReportsAdapter.Click {
         progressDialog.setCancelable(false)
         progressDialog.show()
         reportslist=arrayListOf<reports>()
+        if (!Doctorslist().isConnected(applicationContext)) {
+            Toast.makeText(applicationContext, "No Internet ", Toast.LENGTH_SHORT).show();
+            Log.e("network--->","if-block")
+            progressDialog.dismiss()
+        }
         db.collection("Reports")
             .get()
             .addOnSuccessListener {
@@ -162,5 +167,10 @@ class ReportsActivity : AppCompatActivity(),ReportsAdapter.Click {
 
         val alert = dialogBuilder.create()
         alert.show()
+    }
+    override fun onBackPressed() {
+        val intent= Intent(this, PatientProfileActivity::class.java)
+        startActivity(intent)
+        super.onBackPressed()
     }
 }

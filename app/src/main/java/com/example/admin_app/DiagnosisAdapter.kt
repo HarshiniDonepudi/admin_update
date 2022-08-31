@@ -14,7 +14,7 @@ import coil.load
 import com.example.admin_app.doctor.DoctorAdapter
 
 
-class DiagnosisAdapter (var diagnosis_list: ArrayList<diagnosis>,  private val view: DiagnosisAdapter.Click):
+class DiagnosisAdapter (var diagnosis_list: ArrayList<diagnosis>,  private val view: Click):
     RecyclerView.Adapter<DiagnosisAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
